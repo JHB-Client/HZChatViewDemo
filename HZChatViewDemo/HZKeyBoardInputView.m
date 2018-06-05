@@ -80,6 +80,11 @@ NS_ASSUME_NONNULL_END
         } completion:nil];
     }
    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(upKeyboardView:)]) {
+        [self.delegate upKeyboardView:keyboardHeight];
+    }
+
+    
     self.keyboardHeight = keyboardHeight;
 }
 

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol HZKeyBoardInputViewDelegate <NSObject>
+- (void)upKeyboardView:(CGFloat)keyboardHeight;
 - (void)senMsg:(NSString *)text;
 @end
 

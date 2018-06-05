@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03A7FB0220C66E3C00D5BEEF /* HZKeyBoardInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7FB0120C66E3C00D5BEEF /* HZKeyBoardInputView.m */; };
 		03A7FB0820C6839300D5BEEF /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7FB0720C6839300D5BEEF /* UIView+Extension.m */; };
+		03A7FB0B20C6B1B400D5BEEF /* HZMyContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7FB0A20C6B1B400D5BEEF /* HZMyContentCell.m */; };
 		03B44A652060B3AE00196CA0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B44A642060B3AE00196CA0 /* AppDelegate.m */; };
 		03B44A682060B3AE00196CA0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B44A672060B3AE00196CA0 /* ViewController.m */; };
 		03B44A6B2060B3AE00196CA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03B44A692060B3AE00196CA0 /* Main.storyboard */; };
@@ -44,6 +45,8 @@
 		03A7FB0120C66E3C00D5BEEF /* HZKeyBoardInputView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZKeyBoardInputView.m; sourceTree = "<group>"; };
 		03A7FB0620C6838700D5BEEF /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		03A7FB0720C6839300D5BEEF /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		03A7FB0920C6B1B400D5BEEF /* HZMyContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HZMyContentCell.h; sourceTree = "<group>"; };
+		03A7FB0A20C6B1B400D5BEEF /* HZMyContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZMyContentCell.m; sourceTree = "<group>"; };
 		03B44A602060B3AE00196CA0 /* HZChatViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HZChatViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03B44A632060B3AE00196CA0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		03B44A642060B3AE00196CA0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -128,6 +131,8 @@
 				03B44A642060B3AE00196CA0 /* AppDelegate.m */,
 				03B44A662060B3AE00196CA0 /* ViewController.h */,
 				03B44A672060B3AE00196CA0 /* ViewController.m */,
+				03A7FB0920C6B1B400D5BEEF /* HZMyContentCell.h */,
+				03A7FB0A20C6B1B400D5BEEF /* HZMyContentCell.m */,
 				03A7FB0020C66E3C00D5BEEF /* HZKeyBoardInputView.h */,
 				03A7FB0120C66E3C00D5BEEF /* HZKeyBoardInputView.m */,
 				03B44A692060B3AE00196CA0 /* Main.storyboard */,
@@ -472,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03A7FB0820C6839300D5BEEF /* UIView+Extension.m in Sources */,
+				03A7FB0B20C6B1B400D5BEEF /* HZMyContentCell.m in Sources */,
 				03B44A682060B3AE00196CA0 /* ViewController.m in Sources */,
 				03B44A732060B3AE00196CA0 /* main.m in Sources */,
 				03A7FB0220C66E3C00D5BEEF /* HZKeyBoardInputView.m in Sources */,

@@ -10,6 +10,7 @@
 #import "ViewController.h"
 #import "HZKeyBoardInputView.h"
 #import "UIView+Extension.h"
+#import "HZMyContentCell.h"
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate, HZKeyBoardInputViewDelegate>
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArr;
@@ -26,8 +27,7 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     tableView.dataSource = self;
     tableView.delegate = self;
-    tableView.estimatedSectionHeaderHeight = 0;
-    tableView.estimatedSectionFooterHeight = 0;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.tableFooterView = [UIView new];
     [self.view addSubview:tableView];
     self.tableView = tableView;
@@ -52,48 +52,36 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellID = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
-    }
-    cell.textLabel.text = self.dataArr[indexPath.row];
+    HZMyContentCell *cell = [HZMyContentCell cellWithTableView:tableView];
+    cell.contentText = self.dataArr[indexPath.row];
     return cell;
 }
 #pragma mark -- UITableViewDelegate
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 80;
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50;
 }
 
 #pragma mark ----------------- keyViewDelegate ------------------
 - (void)senMsg:(NSString *)text {
     [self.dataArr addObject:text];
     [self.tableView reloadData];
-    
-    if (self.dataArr.count * 80 > HZScreenH - self.keyView.keyboardHeight - 50) {
-        NSLog(@"--------asdad-------");
-        self.tableView.height = HZScreenH - self.keyView.keyboardHeight - 50;
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:false];
-    }
+    self.tableView.height = HZScreenH - self.keyView.keyboardHeight - 50;
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
 }
 
-//
-//
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-//    self.shouldDownKeyView = false;
-//}
-
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    if (self.tableView.contentOffset.y == HZScreenH - self.keyView.keyboardHeight - 50) return;
-//    [self.keyView resignMyFirstResponder];
-//    self.tableView.height = HZScreenH;
-//}
+- (void)upKeyboardView:(CGFloat)keyboardHeight {
+    self.tableView.height = HZScreenH - keyboardHeight - 50;
+    if (self.dataArr.count != 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    }
+    
+}
 
 #pragma mark ----------------- downKeyView ------------------
 - (void)downKeyView:(UITapGestureRecognizer *)tap {
-    NSLog(@"---------sdfsdfsd---------");
+//    NSLog(@"---------sdfsdfsd---------");
     [self.keyView resignMyFirstResponder];
-    self.tableView.height = HZScreenH;
+    self.tableView.height = HZScreenH - self.keyView.height;
 }
 
 - (void)didReceiveMemoryWarning {
