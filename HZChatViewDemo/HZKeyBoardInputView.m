@@ -80,8 +80,8 @@ NS_ASSUME_NONNULL_END
         } completion:nil];
     }
    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(upKeyboardView:)]) {
-        [self.delegate upKeyboardView:keyboardHeight];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(popKeyboardView:)]) {
+        [self.delegate popKeyboardView:keyboardHeight];
     }
 
     
@@ -143,6 +143,11 @@ NS_ASSUME_NONNULL_END
     } else {
         textView.scrollEnabled = true;
     }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(upKeyboardView:)]) {
+        [self.delegate upKeyboardView:self.height];
+    }
+
     
     self.oldText = textView.text;
 }

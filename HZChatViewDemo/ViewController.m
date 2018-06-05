@@ -64,17 +64,28 @@
 #pragma mark ----------------- keyViewDelegate ------------------
 - (void)senMsg:(NSString *)text {
     [self.dataArr addObject:text];
-    [self.tableView reloadData];
+    
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
     self.tableView.height = HZScreenH - self.keyView.keyboardHeight - 50;
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
 }
 
-- (void)upKeyboardView:(CGFloat)keyboardHeight {
+- (void)popKeyboardView:(CGFloat)keyboardHeight {
     self.tableView.height = HZScreenH - keyboardHeight - 50;
     if (self.dataArr.count != 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
     }
     
+}
+
+
+- (void)upKeyboardView:(CGFloat)keyboardViewHeight {
+    self.tableView.height = HZScreenH - keyboardViewHeight - self.keyView.keyboardHeight;
+    if (self.dataArr.count != 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    }
+    
+    NSLog(@"---------sssss----------");
 }
 
 #pragma mark ----------------- downKeyView ------------------
