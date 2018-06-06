@@ -85,7 +85,6 @@
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
     }
     
-    NSLog(@"---------sssss----------");
 }
 
 #pragma mark ----------------- downKeyView ------------------
@@ -93,6 +92,9 @@
 //    NSLog(@"---------sdfsdfsd---------");
     [self.keyView resignMyFirstResponder];
     self.tableView.height = HZScreenH - self.keyView.height;
+    if (self.dataArr.count != 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

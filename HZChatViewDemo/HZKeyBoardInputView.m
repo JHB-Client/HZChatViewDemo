@@ -35,11 +35,13 @@ NS_ASSUME_NONNULL_END
     textView.backgroundColor = [UIColor redColor];
     textView.delegate = self;
     textView.scrollEnabled = false;
+    textView.returnKeyType = UIReturnKeyDone;
     [self addSubview:textView];
     self.textView = textView;
     //
     UIButton *sendBtn = [UIButton new];
     sendBtn.backgroundColor = [UIColor greenColor];
+    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
     [sendBtn addTarget:self action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:sendBtn];
     self.sendBtn = sendBtn;
@@ -152,9 +154,22 @@ NS_ASSUME_NONNULL_END
     self.oldText = textView.text;
 }
 
+
+
 - (float) heightForString:(UITextView *)textView andWidth:(float)width{
     CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(width, MAXFLOAT)];
     return sizeToFit.height;
+}
+
+
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]){
+        [self send:self.sendBtn];
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark ----------------- resignMyFirstResponder ------------------
