@@ -8,6 +8,7 @@
 
 #import "HZMyContentCell.h"
 #import "Masonry.h"
+#define kP(px) (CGFloat)(px * CGRectGetWidth([[UIScreen mainScreen] bounds]) / ((UI_USER_INTERFACE_IDIOM()== UIUserInterfaceIdiomPad) ? 1024 : 750))
 NS_ASSUME_NONNULL_BEGIN
 @interface HZMyContentCell ()
 @property (nonatomic, weak) UILabel *myTextLabel;
@@ -24,19 +25,19 @@ NS_ASSUME_NONNULL_END
 
 - (void)setUpSubViews {
     UILabel *myTextLabel = [UILabel new];
-    myTextLabel.font = [UIFont systemFontOfSize:20];
+    myTextLabel.font = [UIFont systemFontOfSize:kP(40)];
     myTextLabel.numberOfLines = 0;
     myTextLabel.backgroundColor = [UIColor greenColor];
-    myTextLabel.layer.cornerRadius = 5;
+    myTextLabel.layer.cornerRadius = kP(10);
     myTextLabel.clipsToBounds = true;
     [self addSubview:myTextLabel];
     self.myTextLabel = myTextLabel;
     
     [self.myTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.mas_equalTo(20);
-        make.width.mas_lessThanOrEqualTo(200);
+        make.left.top.mas_equalTo(kP(40));
+        make.width.mas_lessThanOrEqualTo(kP(400));
         //
-        make.bottom.mas_equalTo(self).offset(-20);
+        make.bottom.mas_equalTo(self).offset(-kP(40));
     }];
     
     [self.myTextLabel sizeToFit];

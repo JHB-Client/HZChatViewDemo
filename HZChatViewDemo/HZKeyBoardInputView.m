@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface HZKeyBoardInputView () <UITextViewDelegate>
 @property (nonatomic, weak) UITextView *textView;
-@property (nonatomic, weak) UIButton *sendBtn;
+@property (nonatomic, weak) UIButton *moreBtn;
 @property (nonatomic, copy) NSString *oldText;
 @end
 NS_ASSUME_NONNULL_END
@@ -31,32 +31,33 @@ NS_ASSUME_NONNULL_END
 
 - (void)setUpSubviews {
     UITextView *textView = [UITextView new];
-    textView.font = [UIFont systemFontOfSize:18];
+    textView.font = [UIFont systemFontOfSize:kP(36)];
     textView.backgroundColor = [UIColor redColor];
     textView.delegate = self;
     textView.scrollEnabled = false;
-    textView.returnKeyType = UIReturnKeyDone;
+    textView.returnKeyType = UIReturnKeySend;
+    textView.enablesReturnKeyAutomatically = true;
     [self addSubview:textView];
     self.textView = textView;
     //
-    UIButton *sendBtn = [UIButton new];
-    sendBtn.backgroundColor = [UIColor greenColor];
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    [sendBtn addTarget:self action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:sendBtn];
-    self.sendBtn = sendBtn;
+    UIButton *moreBtn = [UIButton new];
+    moreBtn.backgroundColor = [UIColor greenColor];
+    [moreBtn setTitle:@"➕" forState:UIControlStateNormal];
+    [moreBtn addTarget:self action:@selector(more:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:moreBtn];
+    self.moreBtn = moreBtn;
 }
 
 - (void)setLayoutSubviews {
-    self.textView.x = 5;
+    self.textView.x = kP(10);
     self.textView.width = self.width * 0.8;
-    self.textView.y = 5;
+    self.textView.y = kP(10);
     self.textView.height = self.height - 2 * self.textView.y;
     //
-    self.sendBtn.x = self.textView.right + 5;
-    self.sendBtn.width = self.width - self.sendBtn.x - self.textView.x;
-    self.sendBtn.height = 30;
-    self.sendBtn.y = self.height - self.sendBtn.height - 5;
+    self.moreBtn.x = self.textView.right + kP(10);
+    self.moreBtn.width = self.width - self.moreBtn.x - self.textView.x;
+    self.moreBtn.height = kP(60);
+    self.moreBtn.y = self.height - self.moreBtn.height - kP(10);
 }
 
 - (void)operateKeyboardHeight {
@@ -79,12 +80,12 @@ NS_ASSUME_NONNULL_END
     if (keyboardHeight != 0) {
         [UIView animateWithDuration:duration delay:0.f options:option animations:^{
             self.y = HZScreenH - self.height - keyboardHeight;
+            if (self.delegate && [self.delegate respondsToSelector:@selector(popKeyboardView:)]) {
+                [self.delegate popKeyboardView:keyboardHeight];
+            }
         } completion:nil];
     }
    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(popKeyboardView:)]) {
-        [self.delegate popKeyboardView:keyboardHeight];
-    }
 
     
     self.keyboardHeight = keyboardHeight;
@@ -98,26 +99,18 @@ NS_ASSUME_NONNULL_END
     //
     [UIView animateWithDuration:duration delay:0.f options:option animations:^{
         self.y = HZScreenH - self.height;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView)]) {
+            [self.delegate downKeyboardView];
+        }
+
     } completion:nil];
     self.keyboardHeight = 0;
 }
 
 
-#pragma mark ----------------- send ------------------
-- (void)send:(UIButton *)sendBtn {
+#pragma mark ----------------- more ------------------
+- (void)more:(UIButton *)sendBtn {
 //    [self.textView resignFirstResponder];
-    if (self.textView.text.length == 0) return;
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(senMsg:)]) {
-        [self.delegate senMsg:self.textView.text];
-    }
-    
-    self.textView.text = @"";
-    self.textView.scrollEnabled = false;
-    self.textView.height =  [self heightForString:self.textView andWidth:self.textView.width];
-    self.height = self.textView.height + 10;
-    self.y = HZScreenH - self.keyboardHeight - self.height;
-    self.sendBtn.y = self.height - self.sendBtn.height - 5;
 }
 
 #pragma mark ----------------- removeNoti ------------------
@@ -134,14 +127,14 @@ NS_ASSUME_NONNULL_END
     CGFloat textViewCurrentHeight = [self heightForString:textView andWidth:textView.width];
     
     //
-    NSLog(@"----hhhhhh-----=====================:%d", (int)(textViewCurrentHeight / 18 - 1));
-    int lineNumber = (int)(textViewCurrentHeight / 18 - 1);
+    NSLog(@"----hhhhhh-----=====================:%d", (int)(textViewCurrentHeight / kP(36) - 1));
+    int lineNumber = (int)(textViewCurrentHeight / kP(36) - 1);
     if (lineNumber <= 3) {
         textView.scrollEnabled = false;
         textView.height = textViewCurrentHeight;
-        self.height = self.textView.height + 10;
+        self.height = self.textView.height + kP(20);
         self.y = HZScreenH - self.keyboardHeight - self.height;
-        self.sendBtn.y = self.height - self.sendBtn.height - 5;
+        self.moreBtn.y = self.height - self.moreBtn.height - kP(10);
     } else {
         textView.scrollEnabled = true;
     }
@@ -164,8 +157,21 @@ NS_ASSUME_NONNULL_END
 
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
     if ([text isEqualToString:@"\n"]){
-        [self send:self.sendBtn];
+        if (self.textView.text.length != 0) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(senMsg:)]) {
+                [self.delegate senMsg:self.textView.text];
+            }
+            
+            self.textView.text = @"";
+            self.textView.scrollEnabled = false;
+            self.textView.height =  [self heightForString:self.textView andWidth:self.textView.width];
+            self.height = self.textView.height + kP(20);
+            self.y = HZScreenH - self.keyboardHeight - self.height;
+            self.moreBtn.y = self.height - self.moreBtn.height - kP(10);
+        }
+        
         return NO;
     }
     

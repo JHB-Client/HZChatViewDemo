@@ -33,7 +33,7 @@
     self.tableView = tableView;
     
     
-    HZKeyBoardInputView *keyView = [[HZKeyBoardInputView alloc] initWithFrame:CGRectMake(0, HZScreenH - 50, HZScreenW, 50)];
+    HZKeyBoardInputView *keyView = [[HZKeyBoardInputView alloc] initWithFrame:CGRectMake(0, HZScreenH - kP(100), HZScreenW, kP(100))];
     keyView.delegate = self;
     keyView.backgroundColor = [UIColor blueColor];
     [self.view addSubview:keyView];
@@ -58,7 +58,7 @@
 }
 #pragma mark -- UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 50;
+    return kP(100);
 }
 
 #pragma mark ----------------- keyViewDelegate ------------------
@@ -66,16 +66,15 @@
     [self.dataArr addObject:text];
     
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
-    self.tableView.height = HZScreenH - self.keyView.keyboardHeight - 50;
+    self.tableView.height = HZScreenH - self.keyView.keyboardHeight - kP(100);
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
 }
 
 - (void)popKeyboardView:(CGFloat)keyboardHeight {
-    self.tableView.height = HZScreenH - keyboardHeight - 50;
+    self.tableView.height = HZScreenH - keyboardHeight - kP(100);
     if (self.dataArr.count != 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
     }
-    
 }
 
 
@@ -89,11 +88,21 @@
 
 #pragma mark ----------------- downKeyView ------------------
 - (void)downKeyView:(UITapGestureRecognizer *)tap {
-//    NSLog(@"---------sdfsdfsd---------");
     [self.keyView resignMyFirstResponder];
+    [UIView animateWithDuration:0.25 animations:^{
+        self.tableView.height = HZScreenH - self.keyView.height;
+        if (self.dataArr.count != 0) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
+        }
+    }];
+    
+    
+}
+
+- (void)downKeyboardView {
     self.tableView.height = HZScreenH - self.keyView.height;
     if (self.dataArr.count != 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
     }
 }
 
