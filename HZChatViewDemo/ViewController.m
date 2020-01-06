@@ -29,6 +29,9 @@
     tableView.delegate = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.tableFooterView = [UIView new];
+    tableView.estimatedRowHeight = 0;
+    tableView.estimatedSectionFooterHeight = 0;
+    tableView.estimatedSectionHeaderHeight = 0;
     [self.view addSubview:tableView];
     self.tableView = tableView;
     
@@ -67,13 +70,13 @@
     
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
     self.tableView.height = HZScreenH - self.keyView.keyboardHeight - kP(100);
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
 }
 
 - (void)popKeyboardView:(CGFloat)keyboardHeight {
     self.tableView.height = HZScreenH - keyboardHeight - kP(100);
     if (self.dataArr.count != 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
     }
 }
 
@@ -81,7 +84,7 @@
 - (void)upKeyboardView:(CGFloat)keyboardViewHeight {
     self.tableView.height = HZScreenH - keyboardViewHeight - self.keyView.keyboardHeight;
     if (self.dataArr.count != 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
     }
     
 }
@@ -92,7 +95,7 @@
     [UIView animateWithDuration:0.25 animations:^{
         self.tableView.height = HZScreenH - self.keyView.height;
         if (self.dataArr.count != 0) {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
         }
     }];
     
@@ -102,7 +105,7 @@
 - (void)downKeyboardView {
     self.tableView.height = HZScreenH - self.keyView.height;
     if (self.dataArr.count != 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
     }
 }
 

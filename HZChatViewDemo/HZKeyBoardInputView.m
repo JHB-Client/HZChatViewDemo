@@ -124,9 +124,11 @@ NS_ASSUME_NONNULL_END
     
     if ([self.oldText isEqualToString:textView.text]) return;
     
+    
+    NSLog(@"---1---:%lf", textView.height);
     CGFloat textViewCurrentHeight = [self heightForString:textView andWidth:textView.width];
     
-    //
+    NSLog(@"---1---:%lf", textViewCurrentHeight);
     NSLog(@"----hhhhhh-----=====================:%d", (int)(textViewCurrentHeight / kP(36) - 1));
     int lineNumber = (int)(textViewCurrentHeight / kP(36) - 1);
     if (lineNumber <= 3) {
