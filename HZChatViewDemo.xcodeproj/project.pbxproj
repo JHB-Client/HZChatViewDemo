@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03A7FB0220C66E3C00D5BEEF /* HZKeyBoardInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7FB0120C66E3C00D5BEEF /* HZKeyBoardInputView.m */; };
 		03A7FB0820C6839300D5BEEF /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7FB0720C6839300D5BEEF /* UIView+Extension.m */; };
 		03A7FB0B20C6B1B400D5BEEF /* HZMyContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7FB0A20C6B1B400D5BEEF /* HZMyContentCell.m */; };
 		03B44A652060B3AE00196CA0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B44A642060B3AE00196CA0 /* AppDelegate.m */; };
@@ -18,6 +17,9 @@
 		03B44A732060B3AE00196CA0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B44A722060B3AE00196CA0 /* main.m */; };
 		03B44A7D2060B3AE00196CA0 /* HZChatViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B44A7C2060B3AE00196CA0 /* HZChatViewDemoTests.m */; };
 		03B44A882060B3AE00196CA0 /* HZChatViewDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B44A872060B3AE00196CA0 /* HZChatViewDemoUITests.m */; };
+		84CE24CF23C326E600ED589E /* HZKeyBoardBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CE24CE23C326E600ED589E /* HZKeyBoardBar.m */; };
+		84CE24D223C3272F00ED589E /* HZKeyBoardFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CE24D123C3272F00ED589E /* HZKeyBoardFaceView.m */; };
+		84CE24D523C3274300ED589E /* HZKeyBoardMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CE24D423C3274300ED589E /* HZKeyBoardMoreView.m */; };
 		BDD1611436297C74F2EA74E5 /* libPods-HZChatViewDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB562B9218C5CE5FA73735AB /* libPods-HZChatViewDemo.a */; };
 		D0D14C735F94C69B24864F92 /* libPods-HZChatViewDemoUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BD31D93B4AFF33BED1C99C8 /* libPods-HZChatViewDemoUITests.a */; };
 		F2072813399D1774C4DD4027 /* libPods-HZChatViewDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2813A135DF4D6E096447238A /* libPods-HZChatViewDemoTests.a */; };
@@ -43,8 +45,6 @@
 /* Begin PBXFileReference section */
 		039C435820C7A04A0049EC39 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		039C435920C7A04B0049EC39 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		03A7FB0020C66E3C00D5BEEF /* HZKeyBoardInputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HZKeyBoardInputView.h; sourceTree = "<group>"; };
-		03A7FB0120C66E3C00D5BEEF /* HZKeyBoardInputView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZKeyBoardInputView.m; sourceTree = "<group>"; };
 		03A7FB0620C6838700D5BEEF /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		03A7FB0720C6839300D5BEEF /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		03A7FB0920C6B1B400D5BEEF /* HZMyContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HZMyContentCell.h; sourceTree = "<group>"; };
@@ -68,6 +68,12 @@
 		2813A135DF4D6E096447238A /* libPods-HZChatViewDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HZChatViewDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BD31D93B4AFF33BED1C99C8 /* libPods-HZChatViewDemoUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HZChatViewDemoUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CA029000FA2F2293237537B /* Pods-HZChatViewDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HZChatViewDemoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HZChatViewDemoTests/Pods-HZChatViewDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		84CE24CD23C326E600ED589E /* HZKeyBoardBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZKeyBoardBar.h; sourceTree = "<group>"; };
+		84CE24CE23C326E600ED589E /* HZKeyBoardBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZKeyBoardBar.m; sourceTree = "<group>"; };
+		84CE24D023C3272F00ED589E /* HZKeyBoardFaceView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HZKeyBoardFaceView.h; sourceTree = "<group>"; };
+		84CE24D123C3272F00ED589E /* HZKeyBoardFaceView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZKeyBoardFaceView.m; sourceTree = "<group>"; };
+		84CE24D323C3274300ED589E /* HZKeyBoardMoreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HZKeyBoardMoreView.h; sourceTree = "<group>"; };
+		84CE24D423C3274300ED589E /* HZKeyBoardMoreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZKeyBoardMoreView.m; sourceTree = "<group>"; };
 		A877FEEAB0CDD6DD8401FB55 /* Pods-HZChatViewDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HZChatViewDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HZChatViewDemo/Pods-HZChatViewDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		BB562B9218C5CE5FA73735AB /* libPods-HZChatViewDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HZChatViewDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C389218C86C6CF498420B1F5 /* Pods-HZChatViewDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HZChatViewDemoUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HZChatViewDemoUITests/Pods-HZChatViewDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -129,14 +135,13 @@
 		03B44A622060B3AE00196CA0 /* HZChatViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				84CE24CC23C326E600ED589E /* ToolBar */,
 				03B44A632060B3AE00196CA0 /* AppDelegate.h */,
 				03B44A642060B3AE00196CA0 /* AppDelegate.m */,
 				03B44A662060B3AE00196CA0 /* ViewController.h */,
 				03B44A672060B3AE00196CA0 /* ViewController.m */,
 				03A7FB0920C6B1B400D5BEEF /* HZMyContentCell.h */,
 				03A7FB0A20C6B1B400D5BEEF /* HZMyContentCell.m */,
-				03A7FB0020C66E3C00D5BEEF /* HZKeyBoardInputView.h */,
-				03A7FB0120C66E3C00D5BEEF /* HZKeyBoardInputView.m */,
 				03B44A692060B3AE00196CA0 /* Main.storyboard */,
 				03A7FB0620C6838700D5BEEF /* UIView+Extension.h */,
 				03A7FB0720C6839300D5BEEF /* UIView+Extension.m */,
@@ -174,6 +179,19 @@
 				5BD31D93B4AFF33BED1C99C8 /* libPods-HZChatViewDemoUITests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		84CE24CC23C326E600ED589E /* ToolBar */ = {
+			isa = PBXGroup;
+			children = (
+				84CE24CD23C326E600ED589E /* HZKeyBoardBar.h */,
+				84CE24CE23C326E600ED589E /* HZKeyBoardBar.m */,
+				84CE24D023C3272F00ED589E /* HZKeyBoardFaceView.h */,
+				84CE24D123C3272F00ED589E /* HZKeyBoardFaceView.m */,
+				84CE24D323C3274300ED589E /* HZKeyBoardMoreView.h */,
+				84CE24D423C3274300ED589E /* HZKeyBoardMoreView.m */,
+			);
+			path = ToolBar;
 			sourceTree = "<group>";
 		};
 		BEF7577FB963ACB7C9EDF3A6 /* Pods */ = {
@@ -479,11 +497,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84CE24D523C3274300ED589E /* HZKeyBoardMoreView.m in Sources */,
+				84CE24D223C3272F00ED589E /* HZKeyBoardFaceView.m in Sources */,
 				03A7FB0820C6839300D5BEEF /* UIView+Extension.m in Sources */,
 				03A7FB0B20C6B1B400D5BEEF /* HZMyContentCell.m in Sources */,
 				03B44A682060B3AE00196CA0 /* ViewController.m in Sources */,
+				84CE24CF23C326E600ED589E /* HZKeyBoardBar.m in Sources */,
 				03B44A732060B3AE00196CA0 /* main.m in Sources */,
-				03A7FB0220C66E3C00D5BEEF /* HZKeyBoardInputView.m in Sources */,
 				03B44A652060B3AE00196CA0 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

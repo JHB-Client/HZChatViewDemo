@@ -1,5 +1,5 @@
 //
-//  HZKeyBoardInputView.m
+//  HZKeyBoardBar.m
 //  HZChatViewDemo
 //
 //  Created by 季怀斌 on 2018/6/5.
@@ -9,17 +9,18 @@
 #define HZScreenW [UIScreen mainScreen].bounds.size.width
 #define HZScreenH [UIScreen mainScreen].bounds.size.height
 #define textViewFontSize kP(40)
-#import "HZKeyBoardInputView.h"
+#import "HZKeyBoardBar.h"
 #import "UIView+Extension.h"
 NS_ASSUME_NONNULL_BEGIN
-@interface HZKeyBoardInputView () <UITextViewDelegate>
+@interface HZKeyBoardBar () <UITextViewDelegate>
 @property (nonatomic, weak) UITextView *textView;
 @property (nonatomic, weak) UIButton *moreBtn;
 @property (nonatomic, copy) NSString *oldText;
 @property (nonatomic, assign) CGFloat defaultH;
+@property (nonatomic, assign) BOOL moreBtnSelected;
 @end
 NS_ASSUME_NONNULL_END
-@implementation HZKeyBoardInputView
+@implementation HZKeyBoardBar
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -67,19 +68,24 @@ NS_ASSUME_NONNULL_END
 
 - (void)operateKeyboardHeight {
     //监听键盘，键盘出现
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWill:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     //监听键盘隐藏
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keybaordHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark ----------------- keyboardwill ------------------
-- (void)keyboardWill:(NSNotification *)notification {
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    if (self.moreBtnSelected == true) return;
+    
     NSDictionary *keyboardInforDict= [notification userInfo];
     NSValue *value = [keyboardInforDict objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardRect = [value CGRectValue];
     CGFloat duration = [keyboardInforDict[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     NSUInteger option = [keyboardInforDict[UIKeyboardAnimationCurveUserInfoKey] integerValue];
     CGFloat keyboardHeight = keyboardRect.size.height;
+    
+    NSLog(@"-----sssssss----:%lu", option);
     
     //
     if (keyboardHeight != 0) {
@@ -90,14 +96,14 @@ NS_ASSUME_NONNULL_END
             }
         } completion:nil];
     }
-   
-
-    
     self.keyboardHeight = keyboardHeight;
 }
 
+
 #pragma mark ----------------- keybaordHide ------------------
 - (void)keybaordHide:(NSNotification *)notification {
+   
+    if (self.moreBtnSelected == true) return;
     NSDictionary *keyboardInforDict = [notification userInfo];
     CGFloat duration = [keyboardInforDict[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     NSUInteger option = [keyboardInforDict[UIKeyboardAnimationCurveUserInfoKey] integerValue];
@@ -115,7 +121,39 @@ NS_ASSUME_NONNULL_END
 
 #pragma mark ----------------- more ------------------
 - (void)more:(UIButton *)sendBtn {
-//    [self.textView resignFirstResponder];
+    
+    self.moreBtnSelected = true;
+    if (self.textView.isFirstResponder == true) { // 聚焦
+        [self.textView resignFirstResponder];
+        //down
+        [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
+            self.y = HZScreenH - self.height - kP(400);
+            //2.
+            if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
+                [self.delegate moreBtnClick:self.moreBtn];
+            }
+        } completion:nil];
+        self.moreBtnSelected = false;
+    } else { // 失焦
+        
+        if (self.y != HZScreenH - self.height - kP(400)) {
+            //1. up
+           [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
+               self.y = HZScreenH - self.height - kP(400);
+               //2.
+               if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
+                   [self.delegate moreBtnClick:self.moreBtn];
+               }
+           } completion:nil];
+            self.moreBtnSelected = false;
+        } else {
+            self.moreBtnSelected = false;
+            [self.textView becomeFirstResponder];
+        }
+        
+       
+    }
+    
 }
 
 #pragma mark ----------------- removeNoti ------------------
@@ -126,9 +164,7 @@ NS_ASSUME_NONNULL_END
 #pragma mark ----------------- textViewDelegate ------------------
 - (void)textViewDidChange:(UITextView *)textView {
     
-    
     if ([self.oldText isEqualToString:textView.text]) return;
-    
     
     NSLog(@"---1---:%lf", textView.height);
     CGFloat textViewCurrentHeight = [self heightForString:textView andWidth:textView.width];
@@ -154,7 +190,6 @@ NS_ASSUME_NONNULL_END
         [self.delegate upKeyboardView:self.height];
     }
 
-    
     self.oldText = textView.text;
 }
 
@@ -191,7 +226,20 @@ NS_ASSUME_NONNULL_END
 
 #pragma mark ----------------- resignMyFirstResponder ------------------
 - (void)resignMyFirstResponder {
-    if (self.keyboardHeight == 0) return;
-    [self.textView resignFirstResponder];
+//    if (self.keyboardHeight == 0) return;
+    self.moreBtnSelected = false;
+    if (self.textView.isFirstResponder == true) {
+        [self.textView resignFirstResponder];
+    } else {
+        //
+        [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
+            self.y = HZScreenH - self.height;
+            if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView)]) {
+                [self.delegate downKeyboardView];
+            }
+        } completion:nil];
+        self.keyboardHeight = 0;
+    }
+    
 }
 @end
