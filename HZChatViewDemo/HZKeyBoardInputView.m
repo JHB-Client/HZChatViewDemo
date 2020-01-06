@@ -8,6 +8,7 @@
 //
 #define HZScreenW [UIScreen mainScreen].bounds.size.width
 #define HZScreenH [UIScreen mainScreen].bounds.size.height
+#define textViewFontSize kP(40)
 #import "HZKeyBoardInputView.h"
 #import "UIView+Extension.h"
 NS_ASSUME_NONNULL_BEGIN
@@ -15,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) UITextView *textView;
 @property (nonatomic, weak) UIButton *moreBtn;
 @property (nonatomic, copy) NSString *oldText;
+@property (nonatomic, assign) CGFloat defaultH;
 @end
 NS_ASSUME_NONNULL_END
 @implementation HZKeyBoardInputView
@@ -31,7 +33,7 @@ NS_ASSUME_NONNULL_END
 
 - (void)setUpSubviews {
     UITextView *textView = [UITextView new];
-    textView.font = [UIFont systemFontOfSize:kP(36)];
+    textView.font = [UIFont systemFontOfSize:textViewFontSize];
     textView.backgroundColor = [UIColor redColor];
     textView.delegate = self;
     textView.scrollEnabled = false;
@@ -53,6 +55,9 @@ NS_ASSUME_NONNULL_END
     self.textView.width = self.width * 0.8;
     self.textView.y = kP(10);
     self.textView.height = self.height - 2 * self.textView.y;
+    if (self.defaultH == 0) {
+        self.defaultH = self.textView.height;
+    }
     //
     self.moreBtn.x = self.textView.right + kP(10);
     self.moreBtn.width = self.width - self.moreBtn.x - self.textView.x;
@@ -129,14 +134,18 @@ NS_ASSUME_NONNULL_END
     CGFloat textViewCurrentHeight = [self heightForString:textView andWidth:textView.width];
     
     NSLog(@"---1---:%lf", textViewCurrentHeight);
-    NSLog(@"----hhhhhh-----=====================:%d", (int)(textViewCurrentHeight / kP(36) - 1));
-    int lineNumber = (int)(textViewCurrentHeight / kP(36) - 1);
+    NSLog(@"----hhhhhh-----=====================:%d", (int)(textViewCurrentHeight / textViewFontSize - 1));
+    int lineNumber = (int)(textViewCurrentHeight / textViewFontSize - 1);
     if (lineNumber <= 3) {
         textView.scrollEnabled = false;
-        textView.height = textViewCurrentHeight;
-        self.height = self.textView.height + kP(20);
-        self.y = HZScreenH - self.keyboardHeight - self.height;
-        self.moreBtn.y = self.height - self.moreBtn.height - kP(10);
+       if(lineNumber == 1){
+           textView.height = self.defaultH;
+       } else {
+           textView.height = textViewCurrentHeight;
+       }
+       self.height = textView.height + kP(20);
+       self.y = HZScreenH - self.keyboardHeight - self.height;
+       self.moreBtn.y = self.height - self.moreBtn.height - kP(10);
     } else {
         textView.scrollEnabled = true;
     }
