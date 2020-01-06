@@ -11,12 +11,10 @@
 #import "HZKeyBoardBar.h"
 #import "UIView+Extension.h"
 #import "HZMyContentCell.h"
-#import "HZKeyBoardMoreView.h"
-@interface ViewController () <UITableViewDataSource, UITableViewDelegate, HZKeyBoardBarDelegate, HZKeyBoardMoreViewDelegate>
+@interface ViewController () <UITableViewDataSource, UITableViewDelegate, HZKeyBoardBarDelegate>
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArr;
 @property (nonatomic, weak) HZKeyBoardBar *keyBar;
-@property (nonatomic, weak) HZKeyBoardMoreView *keyMoreView;
 @property (nonatomic, assign) BOOL shouldDownKeyView;
 @end
 
@@ -38,18 +36,11 @@
     self.tableView = tableView;
     
     //1.
-    HZKeyBoardBar *keyBar = [[HZKeyBoardBar alloc] initWithFrame:CGRectMake(0, HZScreenH - kP(100), HZScreenW, kP(100))];
+    HZKeyBoardBar *keyBar = [[HZKeyBoardBar alloc] initWithFrame:CGRectMake(0, HZScreenH - kP(100), HZScreenW, kP(600))];
     keyBar.delegate = self;
-    keyBar.backgroundColor = [UIColor blueColor];
+    keyBar.backgroundColor = [UIColor cyanColor];
     [self.view addSubview:keyBar];
     self.keyBar = keyBar;
-    
-    //2.
-    HZKeyBoardMoreView *keyMoreView = [[HZKeyBoardMoreView alloc] initWithFrame:CGRectMake(0, HZScreenH, HZScreenW, kP(400))];
-    keyMoreView.delegate = self;
-    keyMoreView.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:keyMoreView];
-    self.keyMoreView = keyMoreView;
     
     self.dataArr = [NSMutableArray array];
     
@@ -107,8 +98,7 @@
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
         }
     }];
-    
-    self.keyMoreView.y = HZScreenH;
+
 }
 
 - (void)downKeyboardView {
@@ -122,7 +112,6 @@
 
 #pragma mark -- more
 - (void)moreBtnClick:(UIButton *)moreBtn {
-    self.keyMoreView.y = HZScreenH - self.keyMoreView.height;
 //    self.keyBar
 }
 
