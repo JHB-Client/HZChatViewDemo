@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_END
         [UIView animateWithDuration:duration delay:0.f options:option animations:^{
             self.y = HZScreenH - self.toolBar.height - keyboardHeight;
             if (self.delegate && [self.delegate respondsToSelector:@selector(popKeyboardView:)]) {
-                [self.delegate popKeyboardView:keyboardHeight];
+                [self.delegate popKeyboardView:self.height];
             }
         } completion:nil];
     }
@@ -294,12 +294,12 @@ NS_ASSUME_NONNULL_END
             
             self.textView.text = @"";
             self.textView.scrollEnabled = false;
-            self.textView.height =  [self heightForString:self.textView andWidth:self.textView.width];
-            self.height = self.textView.height + kP(20);
-            self.y = HZScreenH - self.keyboardHeight - self.height;
-            self.voiceBtn.y = self.height - self.voiceBtn.height - self.btnBottmH;
-            self.faceBtn.y = self.height - self.faceBtn.height - self.btnBottmH;
-            self.moreBtn.y = self.height - self.moreBtn.height - self.btnBottmH;
+            self.textView.height = self.defaultH;
+            self.toolBar.height = self.textView.height + 2 * self.textView.y;
+            self.y = HZScreenH - self.keyboardHeight - self.toolBar.height;
+            self.voiceBtn.y = self.toolBar.height - self.voiceBtn.height - self.btnBottmH;
+            self.faceBtn.y = self.toolBar.height - self.faceBtn.height - self.btnBottmH;
+            self.moreBtn.y = self.toolBar.height - self.moreBtn.height - self.btnBottmH;
         }
         
         return NO;
