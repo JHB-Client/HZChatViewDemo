@@ -116,6 +116,7 @@ NS_ASSUME_NONNULL_END
     if (self.btnBottmH == 0) {
         self.btnBottmH = self.faceBtn.y;
     }
+    
     //
     self.moreBtn.width = self.moreBtn.height = btnHeight;
     self.moreBtn.x = self.faceBtn.right + marginX;
@@ -209,7 +210,9 @@ NS_ASSUME_NONNULL_END
         [self.textView resignFirstResponder];
         //down
         [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
+            NSLog(@"----cccdddddd---------:%lf", self.height);
             self.y = HZScreenH - self.toolBar.height - kP(500);
+            self.keyMoreView.y = self.toolBar.bottom;
             //2.
             if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
                 [self.delegate moreBtnClick:self.height];
@@ -265,6 +268,7 @@ NS_ASSUME_NONNULL_END
        self.toolBar.height = textView.height + 2 * textView.y;
        self.height = kP(500) + self.toolBar.height;
        self.y = HZScreenH - self.toolBar.height - self.keyboardHeight;
+        //
        self.keyMoreView.y = self.toolBar.bottom;
        self.voiceBtn.y = self.toolBar.height - self.voiceBtn.height - self.btnBottmH;
        self.faceBtn.y = self.toolBar.height - self.faceBtn.height - self.btnBottmH;
@@ -301,6 +305,7 @@ NS_ASSUME_NONNULL_END
             self.textView.scrollEnabled = false;
             self.textView.height = self.defaultH;
             self.toolBar.height = self.textView.height + 2 * self.textView.y;
+            self.height = self.toolBar.height + kP(500);
             self.y = HZScreenH - self.keyboardHeight - self.toolBar.height;
             self.voiceBtn.y = self.toolBar.height - self.voiceBtn.height - self.btnBottmH;
             self.faceBtn.y = self.toolBar.height - self.faceBtn.height - self.btnBottmH;
