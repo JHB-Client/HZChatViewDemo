@@ -11,6 +11,7 @@
 #define textViewFontSize kP(40)
 #import "HZKeyBoardBar.h"
 #import "UIView+Extension.h"
+#import "HZKeyBoardFaceView.h"
 #import "HZKeyBoardMoreView.h"
 NS_ASSUME_NONNULL_BEGIN
 @interface HZKeyBoardBar () <UITextViewDelegate>
@@ -19,11 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) UITextView *textView;
 @property (nonatomic, weak) UIButton *faceBtn;
 @property (nonatomic, weak) UIButton *moreBtn;
+@property (nonatomic, weak) UIButton *lastToolBtn;
+@property (nonatomic, weak) HZKeyBoardFaceView *keyFaceView;
 @property (nonatomic, weak) HZKeyBoardMoreView *keyMoreView;
 @property (nonatomic, copy) NSString *oldText;
 @property (nonatomic, assign) CGFloat defaultH;
 @property (nonatomic, assign) CGFloat btnBottmH;
-@property (nonatomic, assign) BOOL moreBtnSelected;
+@property (nonatomic, assign) BOOL toolBtnSelected;
 @end
 NS_ASSUME_NONNULL_END
 @implementation HZKeyBoardBar
@@ -76,6 +79,11 @@ NS_ASSUME_NONNULL_END
     [moreBtn addTarget:self action:@selector(more:) forControlEvents:UIControlEventTouchUpInside];
     [self.toolBar addSubview:moreBtn];
     self.moreBtn = moreBtn;
+    //
+    HZKeyBoardFaceView *keyFaceView = [HZKeyBoardFaceView new];
+    keyFaceView.backgroundColor = [UIColor redColor];
+    [self addSubview:keyFaceView];
+    self.keyFaceView = keyFaceView;
     
     //
    HZKeyBoardMoreView *keyMoreView = [HZKeyBoardMoreView new];
@@ -123,6 +131,12 @@ NS_ASSUME_NONNULL_END
     self.moreBtn.y = self.toolBar.height - self.moreBtn.height * 1.1;
     
     //
+    self.keyFaceView.x = kP(0);
+    self.keyFaceView.width = self.width;
+    self.keyFaceView.y = self.toolBar.bottom;
+    self.keyFaceView.height = kP(700);
+    
+    //
     self.keyMoreView.x = kP(0);
     self.keyMoreView.width = self.width;
     self.keyMoreView.y = self.toolBar.bottom;
@@ -139,7 +153,7 @@ NS_ASSUME_NONNULL_END
 #pragma mark ----------------- keyboardwill ------------------
 - (void)keyboardWillShow:(NSNotification *)notification {
     
-    if (self.moreBtnSelected == true) return;
+    if (self.toolBtnSelected == true) return;
     
     NSDictionary *keyboardInforDict= [notification userInfo];
     NSValue *value = [keyboardInforDict objectForKey:UIKeyboardFrameEndUserInfoKey];
@@ -166,7 +180,7 @@ NS_ASSUME_NONNULL_END
 #pragma mark ----------------- keybaordHide ------------------
 - (void)keyboardWillHide:(NSNotification *)notification {
    
-    if (self.moreBtnSelected == true) {
+    if (self.toolBtnSelected == true) {
 //        if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView:)]) {
 //            [self.delegate downKeyboardView:self.toolBar.height];
 //        }
@@ -189,55 +203,77 @@ NS_ASSUME_NONNULL_END
 
 
 #pragma mark ----------------- more ------------------
-- (void)more:(UIButton *)sendBtn {
-    [self toolBtnClick];
+- (void)voice:(UIButton *)voiceBtn {
+//    [self toolBtnClick];
 }
 
 
 - (void)face:(UIButton *)faceBtn {
-    [self toolBtnClick];
+    [self toolBtnClick:faceBtn];
 }
 
 
-- (void)voice:(UIButton *)voiceBtn {
-    [self toolBtnClick];
+- (void)more:(UIButton *)sendBtn {
+    [self toolBtnClick:sendBtn];
 }
 
 
-- (void)toolBtnClick {
-    self.moreBtnSelected = true;
-    if (self.textView.isFirstResponder == true) { // 聚焦
-        [self.textView resignFirstResponder];
-        //down
-        [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
-            NSLog(@"----cccdddddd---------:%lf", self.height);
-            self.y = HZScreenH - self.toolBar.height - kP(500);
-            self.keyMoreView.y = self.toolBar.bottom;
-            //2.
-            if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
-                [self.delegate moreBtnClick:self.height];
+
+
+- (void)toolBtnClick:(UIButton *)toolBtn{
+    
+    if ([toolBtn isEqual:self.lastToolBtn]) { //和键盘切换
+        self.toolBtnSelected = true;
+        if (self.textView.isFirstResponder == true) { // 聚焦
+            [self.textView resignFirstResponder];
+            //down
+            [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
+                NSLog(@"----cccdddddd---------:%lf", self.height);
+                self.y = HZScreenH - self.toolBar.height - kP(500);
+                self.keyMoreView.y = self.toolBar.bottom;
+                //2.
+                if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
+                    [self.delegate moreBtnClick:self.height];
+                }
+            } completion:nil];
+            self.toolBtnSelected = false;
+        } else { // 失焦
+            
+            
+            NSLog(@"-------:%d", self.toolBtnSelected);
+            
+            if (self.y != HZScreenH - self.toolBar.height - kP(500)) {
+                //1. up
+               [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
+                   self.y = HZScreenH - self.toolBar.height - kP(500);
+                   //2.
+                   if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
+                       [self.delegate moreBtnClick:self.height];
+                   }
+               } completion:nil];
+                self.toolBtnSelected = false;
+            } else {
+                self.toolBtnSelected = false;
+                [self.textView becomeFirstResponder];
             }
-        } completion:nil];
-        self.moreBtnSelected = false;
-    } else { // 失焦
-        
-        if (self.y != HZScreenH - self.toolBar.height - kP(500)) {
-            //1. up
-           [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
-               self.y = HZScreenH - self.toolBar.height - kP(500);
-               //2.
-               if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
-                   [self.delegate moreBtnClick:self.height];
-               }
-           } completion:nil];
-            self.moreBtnSelected = false;
-        } else {
-            self.moreBtnSelected = false;
-            [self.textView becomeFirstResponder];
         }
+    } else { //退去键盘和tool切换
+        self.toolBtnSelected = true;
+        [self.textView resignFirstResponder];
         
-       
+        //1. up
+       [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
+           self.y = HZScreenH - self.toolBar.height - kP(500);
+           //2.
+           if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
+               [self.delegate moreBtnClick:self.height];
+           }
+       } completion:nil];
+        self.toolBtnSelected = false;
+        
     }
+
+    self.lastToolBtn = toolBtn;
 }
 
 #pragma mark ----------------- removeNoti ------------------
@@ -321,7 +357,7 @@ NS_ASSUME_NONNULL_END
 #pragma mark ----------------- resignMyFirstResponder ------------------
 - (void)resignMyFirstResponder {
 //    if (self.keyboardHeight == 0) return;
-    self.moreBtnSelected = false;
+    self.toolBtnSelected = false;
     if (self.textView.isFirstResponder == true) {
         [self.textView resignFirstResponder];
         //
