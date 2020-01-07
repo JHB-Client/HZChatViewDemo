@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) HZKeyBoardMoreView *keyMoreView;
 @property (nonatomic, copy) NSString *oldText;
 @property (nonatomic, assign) CGFloat defaultH;
+@property (nonatomic, assign) CGFloat btnBottmH;
 @property (nonatomic, assign) BOOL moreBtnSelected;
 @end
 NS_ASSUME_NONNULL_END
@@ -111,6 +112,10 @@ NS_ASSUME_NONNULL_END
     self.faceBtn.width = self.faceBtn.height = btnHeight;
     self.faceBtn.x = self.textView.right + marginX;
     self.faceBtn.y = self.toolBar.height - self.faceBtn.height * 1.1;
+    
+    if (self.btnBottmH == 0) {
+        self.btnBottmH = self.faceBtn.y;
+    }
     //
     self.moreBtn.width = self.moreBtn.height = btnHeight;
     self.moreBtn.x = self.faceBtn.right + marginX;
@@ -167,6 +172,7 @@ NS_ASSUME_NONNULL_END
     //
     [UIView animateWithDuration:duration delay:0.f options:option animations:^{
         self.y = HZScreenH - self.toolBar.height;
+        
         if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView)]) {
             [self.delegate downKeyboardView];
         }
@@ -201,7 +207,7 @@ NS_ASSUME_NONNULL_END
             self.y = HZScreenH - self.toolBar.height - kP(500);
             //2.
             if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
-                [self.delegate moreBtnClick:self.moreBtn];
+                [self.delegate moreBtnClick:self.height];
             }
         } completion:nil];
         self.moreBtnSelected = false;
@@ -213,7 +219,7 @@ NS_ASSUME_NONNULL_END
                self.y = HZScreenH - self.toolBar.height - kP(500);
                //2.
                if (self.delegate && [self.delegate respondsToSelector:@selector(moreBtnClick:)]) {
-                   [self.delegate moreBtnClick:self.moreBtn];
+                   [self.delegate moreBtnClick:self.height];
                }
            } completion:nil];
             self.moreBtnSelected = false;
@@ -249,12 +255,15 @@ NS_ASSUME_NONNULL_END
        } else {
            textView.height = textViewCurrentHeight;
        }
-       self.toolBar.height = textView.height + 2 * textView.y;
         
-       self.height = kP(600) + self.toolBar.height;
-       self.y = HZScreenH - self.height;
+        //
+       self.toolBar.height = textView.height + 2 * textView.y;
+       self.height = kP(500) + self.toolBar.height;
+       self.y = HZScreenH - self.toolBar.height - self.keyboardHeight;
        self.keyMoreView.y = self.toolBar.bottom;
-//       self.moreBtn.y = self.toolBar.height - self.moreBtn.height - kP(10);
+       self.voiceBtn.y = self.toolBar.height - self.voiceBtn.height - self.btnBottmH;
+       self.faceBtn.y = self.toolBar.height - self.faceBtn.height - self.btnBottmH;
+       self.moreBtn.y = self.toolBar.height - self.moreBtn.height - self.btnBottmH;
     } else {
         textView.scrollEnabled = true;
     }
@@ -288,7 +297,9 @@ NS_ASSUME_NONNULL_END
             self.textView.height =  [self heightForString:self.textView andWidth:self.textView.width];
             self.height = self.textView.height + kP(20);
             self.y = HZScreenH - self.keyboardHeight - self.height;
-            self.moreBtn.y = self.height - self.moreBtn.height - kP(10);
+            self.voiceBtn.y = self.height - self.voiceBtn.height - self.btnBottmH;
+            self.faceBtn.y = self.height - self.faceBtn.height - self.btnBottmH;
+            self.moreBtn.y = self.height - self.moreBtn.height - self.btnBottmH;
         }
         
         return NO;
@@ -303,6 +314,14 @@ NS_ASSUME_NONNULL_END
     self.moreBtnSelected = false;
     if (self.textView.isFirstResponder == true) {
         [self.textView resignFirstResponder];
+        //
+        if (self.textView.text.length == 0) {
+            self.toolBar.height = kP(100);
+            self.height = kP(600);
+            self.y = HZScreenH - self.toolBar.height;
+            self.keyMoreView.y = self.toolBar.bottom;
+        }
+        
     } else {
         //
         [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{

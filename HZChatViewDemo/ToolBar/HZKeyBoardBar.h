@@ -13,7 +13,7 @@
 - (void)downKeyboardView;
 - (void)popKeyboardView:(CGFloat)keyboardHeight;
 - (void)senMsg:(NSString *)text;
-- (void)moreBtnClick:(UIButton *)moreBtn;
+- (void)moreBtnClick:(CGFloat)keyboardHeight;
 @end
 
 @interface HZKeyBoardBar : UIView
