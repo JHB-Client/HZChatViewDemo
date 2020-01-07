@@ -165,7 +165,12 @@ NS_ASSUME_NONNULL_END
 #pragma mark ----------------- keybaordHide ------------------
 - (void)keyboardWillHide:(NSNotification *)notification {
    
-    if (self.moreBtnSelected == true) return;
+    if (self.moreBtnSelected == true) {
+//        if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView:)]) {
+//            [self.delegate downKeyboardView:self.toolBar.height];
+//        }
+        return;
+    }
     NSDictionary *keyboardInforDict = [notification userInfo];
     CGFloat duration = [keyboardInforDict[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     NSUInteger option = [keyboardInforDict[UIKeyboardAnimationCurveUserInfoKey] integerValue];
@@ -173,8 +178,8 @@ NS_ASSUME_NONNULL_END
     [UIView animateWithDuration:duration delay:0.f options:option animations:^{
         self.y = HZScreenH - self.toolBar.height;
         
-        if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView)]) {
-            [self.delegate downKeyboardView];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView:)]) {
+            [self.delegate downKeyboardView:self.toolBar.height];
         }
 
     } completion:nil];
@@ -326,8 +331,8 @@ NS_ASSUME_NONNULL_END
         //
         [UIView animateWithDuration:0.25 delay:0.f options:7 animations:^{
             self.y = HZScreenH - self.toolBar.height;
-            if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView)]) {
-                [self.delegate downKeyboardView];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(downKeyboardView:)]) {
+                [self.delegate downKeyboardView:self.toolBar.height];
             }
         } completion:nil];
         self.keyboardHeight = 0;

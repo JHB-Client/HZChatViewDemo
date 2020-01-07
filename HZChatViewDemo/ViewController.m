@@ -91,21 +91,22 @@
 
 #pragma mark ----------------- downKeyView ------------------
 - (void)downKeyView:(UITapGestureRecognizer *)tap {
+//    [UIView animateWithDuration:0.25 animations:^{
+//        self.tableView.height = HZScreenH - kP(100);
+//        if (self.dataArr.count != 0) {
+//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
+//        }
+//    }];
     [self.keyBar resignMyFirstResponder];
+}
+
+- (void)downKeyboardView:(CGFloat)keyboardHeight {
     [UIView animateWithDuration:0.25 animations:^{
-        self.tableView.height = HZScreenH - kP(100);
+        self.tableView.height = HZScreenH - keyboardHeight;
         if (self.dataArr.count != 0) {
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
         }
     }];
-
-}
-
-- (void)downKeyboardView {
-    if (self.dataArr.count != 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataArr.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:true];
-    }
-    
 }
 
 

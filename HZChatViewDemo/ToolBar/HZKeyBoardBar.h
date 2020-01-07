@@ -10,7 +10,7 @@
 #define kP(px) (CGFloat)(px * CGRectGetWidth([[UIScreen mainScreen] bounds]) / ((UI_USER_INTERFACE_IDIOM()== UIUserInterfaceIdiomPad) ? 1024 : 750))
 @protocol HZKeyBoardBarDelegate <NSObject>
 - (void)upKeyboardView:(CGFloat)keyboardViewHeight;
-- (void)downKeyboardView;
+- (void)downKeyboardView:(CGFloat)keyboardHeight;
 - (void)popKeyboardView:(CGFloat)keyboardHeight;
 - (void)senMsg:(NSString *)text;
 - (void)moreBtnClick:(CGFloat)keyboardHeight;
